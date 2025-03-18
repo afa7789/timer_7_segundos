@@ -8,7 +8,22 @@
         #next-multiple { font-size: 24px; color: #ddd; transition: all 0.5s ease-in-out; }
         #times-list { border-top: 1px solid #ccc; margin-top: 20px; padding-top: 10px; height: 60vh; overflow-y: auto; }
         .highlight { color: #ff00ff; font-weight: bold; animation: pulse 0.5s infinite alternate; }
-
+        button {
+            font-size: 24px;
+            padding: 15px 30px;
+            margin: 10px;
+            border-radius: 10px;
+            background-color: #444;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out;
+        }
+        
+        button:hover {
+            transform: scale(1.1);
+            background-color: #666;
+        }
         @keyframes pulse {
             0% { transform: scale(1); color: #ff00ff; text-shadow: 0 0 5px #ff00ff, 0 0 15px #ff00ff; }
             100% { transform: scale(1.1); color: #ffff00; text-shadow: 0 0 10px #ffff00, 0 0 20px #ffff00; }
