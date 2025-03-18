@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Timer Múltiplos de 7</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding-top: 20px; background-color: #111; color: #fff; }
+        #timer { font-size: 72px; margin: 20px 0; font-weight: bold; }
+        #next-multiple { font-size: 24px; color: #ddd; transition: all 0.5s ease-in-out; }
+        #times-list { border-top: 1px solid #ccc; margin-top: 20px; padding-top: 10px; height: 60vh; overflow-y: auto; }
+        .highlight { color: #ff00ff; font-weight: bold; animation: pulse 0.5s infinite alternate; }
+
+        @keyframes pulse {
+            0% { transform: scale(1); color: #ff00ff; text-shadow: 0 0 5px #ff00ff, 0 0 15px #ff00ff; }
+            100% { transform: scale(1.1); color: #ffff00; text-shadow: 0 0 10px #ffff00, 0 0 20px #ffff00; }
+        }
+    </style>
+</head>
+<body>
+    <h1>Tempos múltiplos de 7 após 0:59</h1>
+    <div id="next-multiple">Faltam 7'000" segundos para o próximo múltiplo de 7.</div>
+    <div id="timer">00:00:000</div>
+    <button onclick="startPause()">Start/Pause</button>
+    <button onclick="reset()">Reset</button>
+    <div id="times-list"></div>
+
+    <script>
+        let timer;
+        let running = false;
+        let startTime;
+        let elapsedTime = 0;
+        let totalDuration = 30 * 60 * 1000; // 30 minutos em ms
+
+        function updateTimer() {
+            const now = Date.now();
+            elapsedTime = now - startTime;
+            const minutes = Math.floor(elapsedTime / 60000);
+            const seconds = Math.floor((elapsedTime % 60000) / 1000);
+            const milliseconds = elapsedTime % 1000;
+            document.getElementById("timer").innerText = 
+                `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}:${String(milliseconds).padStart(3, '0')}`;
+
+            const totalSeconds = minutes * 60 + seconds;
+            const remainder = totalSeconds % 7;
+            const timeToNext = 7 - remainder;
+            const remainingMs = (7 * 1000) - (seconds % 7 * 1000 + milliseconds);
+            const nextMultiple = document.getElementById("next-multiple");
+
+            if (timeToNext === 1 && milliseconds > 0) {
+                nextMultiple.innerText = `Faltam menos de 1"(${remainingMs} ms) para o próximo múltiplo de 7! `;
+                nextMultiple.classList.add('highlight');
+            } else {
+                nextMultiple.innerText = `Faltam ${timeToNext - 1}'${remainingMs % 1000}" segundos para o próximo múltiplo de 7.`;
+                nextMultiple.classList.remove('highlight');
+            }
+
+            if (remainder === 0 && milliseconds === 0 && totalSeconds > 59) {
+                const timesList = document.getElementById("times-list");
+                timesList.innerHTML += `<div>${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}:${String(milliseconds).padStart(3, '0')}</div>`;
+            }
+
+            if (elapsedTime >= totalDuration) {
+                totalDuration += 30 * 60 * 1000; // Adiciona mais 30 minutos
+            }
+        }
+
+        function startPause() {
+            if (running) {
+                clearInterval(timer);
+            } else {
+                startTime = Date.now() - elapsedTime;
+                timer = setInterval(updateTimer, 10);
+            }
+            running = !running;
+        }
+
+        function reset() {
+            clearInterval(timer);
+            running = false;
+            elapsedTime = 0;
+            totalDuration = 30 * 60 * 1000;
+            document.getElementById("timer").innerText = "00:00:000";
+            document.getElementById("next-multiple").innerText = "Faltam 7'000\" segundos para o próximo múltiplo de 7.";
+            document.getElementById("times-list").innerHTML = "";
+        }
+
+        function populateTimesList(minutes) {
+            const timesList = document.getElementById("times-list");
+            timesList.innerHTML = "";
+
+            for (let totalSeconds = 60; totalSeconds <= 30 * 60; totalSeconds++) {
+                if (totalSeconds % 7 === 0) {
+                    const minutes = Math.floor(totalSeconds / 60);
+                    const seconds = totalSeconds % 60;
+                    timesList.innerHTML += `<div>${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}</div>`;
+                }
+            }
+        }
+
+        populateTimesList(3600)
+
+    </script>
+</body>
+</html>
