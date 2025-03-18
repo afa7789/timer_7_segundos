@@ -21,9 +21,7 @@
     <div id="timer">00:00:000</div>
     <button onclick="startPause()">Start/Pause</button>
     <button onclick="reset()">Reset</button>
-    <div id="times-list">
-            <h2>Templos múltiplos de 7 após 0:59</h1>
-    </div>
+    <div id="times-list"></div>
     <script>
         let timer;
         let running = false;
@@ -87,7 +85,7 @@
 
         function populateTimesList(minutes) {
             const timesList = document.getElementById("times-list");
-            timesList.innerHTML = "";
+            timesList.innerHTML = "<h2>Templos múltiplos de 7 após 0:59</h1>";
 
             for (let totalSeconds = 60; totalSeconds <= 30 * 60; totalSeconds++) {
                 if (totalSeconds % 7 === 0) {
