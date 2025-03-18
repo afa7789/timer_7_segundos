@@ -46,7 +46,8 @@
             const nextMultiple = document.getElementById("next-multiple");
 
             if (timeToNext === 1 && milliseconds > 0) {
-                nextMultiple.innerText = `Faltam menos de 1"(${remainingMs} ms) para o próximo múltiplo de 7! `;
+
+                nextMultiple.innerText = `(${remainingMs} ms)\nFaltam menos de 1" para o próximo múltiplo de 7!  `;
                 nextMultiple.classList.add('highlight');
             } else {
                 nextMultiple.innerText = `Faltam ${timeToNext - 1}'${remainingMs % 1000}" segundos para o próximo múltiplo de 7.`;
